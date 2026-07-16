@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+env/
+.vscode/
+.idea/
+.DS_Store
+
+# secrets - never commit your real API key
+.env
+
+# uploaded PDFs and generated data are user-specific, don't commit them
+data/raw/*.pdf
+data/processed/*
+!data/processed/.gitkeep
+
+# FAISS index files are regenerated from the PDF
+models/*.faiss
+models/*.pkl
+models/index/

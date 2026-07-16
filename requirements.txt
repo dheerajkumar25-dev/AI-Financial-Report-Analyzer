@@ -1,0 +1,13 @@
+streamlit
+langchain
+langchain-community
+langchain-groq
+faiss-cpu
+sentence-transformers
+groq
+pymupdf
+pandas
+numpy
+matplotlib
+plotly
+python-dotenv
