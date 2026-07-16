@@ -1,14 +1,65 @@
 # AI Financial Report Analyzer
 
-An AI tool that reads a company's annual report PDF and lets you: get an instant financial summary, see key metrics (Revenue, Net Profit, EPS, etc.), read a risk analysis, and ask free-form questions about the report — answered using RAG (Retrieval-Augmented Generation) grounded in the actual document text.
+An AI-powered application that analyzes a company's annual report PDF to generate financial summaries, extract key financial metrics, perform risk analysis, and answer natural language questions using Retrieval-Augmented Generation (RAG).
+
+---
+
+## Features
+
+- 📄 Upload annual report PDFs for analysis
+- 🤖 AI-powered financial summary generation
+- 📊 Automatic extraction of key financial metrics
+- ⚠️ Financial risk analysis and business insights
+- 💬 Ask questions using Retrieval-Augmented Generation (RAG)
+- 🔍 Semantic search using FAISS and Hugging Face embeddings
+- 📈 Interactive financial charts and visualizations
+- 🌐 Modern Streamlit web dashboard
+- 🐳 Docker support for containerized deployment
+
+---
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Language | Python |
+| AI / LLM | LangChain, Groq API |
+| Embeddings | Hugging Face Sentence Transformers |
+| Vector Database | FAISS |
+| PDF Processing | PyMuPDF |
+| Visualization | Plotly |
+| Frontend | Streamlit |
+| Deployment | Docker |
+
+---
+
+## Screenshots
+
+### Home Page
+
+> Add screenshot here
+
+### Upload Report
+
+> Add screenshot here
+
+### Financial Summary
+
+> Add screenshot here
+
+### Ask AI
+
+> Add screenshot here
+
+---
 
 ## Testing
 
-This project has been tested locally on Windows using Python 3.12.
+This project has been tested locally on **Windows (Python 3.12)**.
 
 ### Verified Components
 
-- ✅ PDF extraction from financial reports
+- ✅ PDF extraction
 - ✅ Text preprocessing and cleaning
 - ✅ Document chunking
 - ✅ Semantic embeddings using Hugging Face
@@ -19,113 +70,214 @@ This project has been tested locally on Windows using Python 3.12.
 - ✅ Streamlit dashboard
 - ✅ Financial charts and visualizations
 
-> **Note:** To use AI-powered summarization and question answering, create a `.env` file and add your `GROQ_API_KEY`.
-## Why these libraries
+> **Note:** Create a `.env` file and add your `GROQ_API_KEY` before running AI-powered summarization and question answering.
 
-- **PyMuPDF (`fitz`)**: fast, no external system dependencies (some PDF libraries need `poppler` installed separately on Windows, which is a common setup headache).
-- **HuggingFace `sentence-transformers` embeddings**: free, runs locally on your CPU, no API key or cost — versus a paid embedding API.
-- **FAISS**: the standard free, local vector similarity search library — widely used, well documented, easy to explain in an interview.
-- **LangChain**: used specifically for `RecursiveCharacterTextSplitter` (smart chunking) and the `FAISS` wrapper — not for heavier agent/chain abstractions, to keep the code readable.
-- **Groq API**: free tier, fast inference, hosts open models (Llama 3) — no paid service needed.
+---
+
+# Project Pipeline
+
+```
+Annual Report PDF
+        │
+        ▼
+ PDF Extraction
+        │
+        ▼
+ Text Cleaning
+        │
+        ▼
+ Document Chunking
+        │
+        ▼
+ Embeddings
+        │
+        ▼
+ FAISS Vector Store
+        │
+        ▼
+      Groq LLM
+   ┌───────────────┐
+   ▼               ▼
+Summary         Question Answering
+   │               │
+   └──────► Streamlit Dashboard
+```
+
+### Workflow
+
+1. Upload a financial report PDF.
+2. Extract text using **PyMuPDF**.
+3. Clean and preprocess the extracted text.
+4. Split the text into overlapping chunks.
+5. Generate semantic embeddings using Hugging Face.
+6. Store embeddings inside a FAISS vector database.
+7. Extract financial metrics using deterministic regex.
+8. Generate AI summaries, risk analysis, and business insights.
+9. Answer user questions through Retrieval-Augmented Generation.
+10. Visualize extracted financial metrics with Plotly charts.
+
+---
+
+# Design Decisions
+
+Instead of relying on an LLM for everything, the project combines deterministic extraction with Generative AI.
+
+- Financial metrics (Revenue, EPS, Net Profit, Assets, Liabilities, etc.) are extracted using **regular expressions**, ensuring numerical values come directly from the report.
+- Language-intensive tasks such as **summarization**, **risk analysis**, and **question answering** use **Groq LLM** with Retrieval-Augmented Generation (RAG).
+- FAISS retrieves only the most relevant document chunks before sending them to the LLM, reducing hallucinations and improving response accuracy.
+
+---
+
+## Why These Libraries
+
+- **PyMuPDF (`fitz`)** — Fast and lightweight PDF processing without additional system dependencies.
+- **Sentence Transformers** — Free local embedding generation using Hugging Face models.
+- **FAISS** — Efficient semantic similarity search for Retrieval-Augmented Generation.
+- **LangChain** — Used for document chunking and FAISS integration while keeping the code modular.
+- **Groq API** — High-speed inference for open-source LLMs with a free developer tier.
+
+---
 
 ## Project Structure
 
-```
+```text
 AI-Financial-Report-Analyzer/
+│
 ├── app/
-│   └── app.py                  # Streamlit dashboard
+│   └── app.py
+│
 ├── data/
-│   ├── raw/                    # uploaded PDFs
-│   └── processed/               # (reserved for saved intermediate text, if you extend this)
+│   ├── raw/
+│   └── processed/
+│
 ├── models/
-│   └── index/                   # FAISS vector index (auto-generated)
-├── reports/                     # (reserved for saved analysis reports)
+│   └── index/
+│
+├── reports/
+│
 ├── notebooks/
-│   └── exploration.ipynb        # walkthrough of the pipeline
+│   └── exploration.ipynb
+│
 ├── src/
-│   ├── utils.py                 # shared paths, config, API key loading
-│   ├── pdf_extractor.py         # PDF → text (PyMuPDF)
-│   ├── text_cleaner.py          # remove noise from extracted text
-│   ├── chunker.py                # split text into chunks
-│   ├── embeddings.py             # embeddings + FAISS vector store
-│   ├── financial_metrics.py      # regex extraction of key numbers
-│   ├── rag_qa.py                  # retrieval + Groq answer generation
-│   ├── summary_generator.py       # LLM summary / risk / insights
-│   └── charts.py                  # Plotly chart builders
-├── requirements.txt
+│   ├── utils.py
+│   ├── pdf_extractor.py
+│   ├── text_cleaner.py
+│   ├── chunker.py
+│   ├── embeddings.py
+│   ├── financial_metrics.py
+│   ├── summary_generator.py
+│   ├── rag_qa.py
+│   └── charts.py
+│
 ├── Dockerfile
+├── requirements.txt
 ├── .env.example
 └── README.md
 ```
 
-## How the pipeline works
+---
 
-1. **Upload** a PDF → `pdf_extractor.py` pulls out raw text.
-2. **Clean** → `text_cleaner.py` removes page numbers, extra whitespace.
-3. **Chunk** → `chunker.py` splits the cleaned text into ~1000-character overlapping pieces.
-4. **Embed + Index** → `embeddings.py` turns each chunk into a vector (HuggingFace model) and stores them in a FAISS index.
-5. **Extract metrics** → `financial_metrics.py` uses regex to pull Revenue, Net Profit, Operating Profit, EPS, Debt, Cash Flow, Expenses, Assets, Liabilities directly from the text (deterministic, not LLM-based — see design note in that file).
-6. **Ask AI** → `rag_qa.py` retrieves the most relevant chunks for a question and asks Groq's LLM to answer using only that context (reduces hallucination, and lets you show exactly which chunks were used).
-7. **Summary / Risk / Insights** → `summary_generator.py` sends the first ~8000 characters of cleaned text to Groq with three different prompts.
-8. **Charts** → `charts.py` turns the extracted metrics into a Plotly bar chart.
+## Getting Started
 
-### Design decision: regex for numbers, LLM for language
+### Clone Repository
 
-Numeric facts (Revenue, EPS, etc.) are extracted with regex, not by asking the LLM — this guarantees the number actually appears in the document, since LLMs can occasionally misstate figures. The LLM is used only for tasks that genuinely need language understanding: summarizing, judging risk, and free-form Q&A. This is a good thing to point out in an interview — it shows you thought about where an LLM is (and isn't) the right tool.
+```bash
+git clone https://github.com/dheerajkumar25-dev/AI-Financial-Report-Analyzer.git
 
-## Getting Started (Windows + PowerShell)
+cd AI-Financial-Report-Analyzer
+```
+
+### Create Virtual Environment
 
 ```powershell
-git clone https://github.com/<your-username>/AI-Financial-Report-Analyzer.git
-cd AI-Financial-Report-Analyzer
-
 python -m venv venv
-.\venv\Scripts\Activate.ps1
 
+.\venv\Scripts\Activate.ps1
+```
+
+### Install Dependencies
+
+```powershell
 pip install -r requirements.txt
 ```
 
-Get a free Groq API key at [console.groq.com](https://console.groq.com), then:
+### Configure Environment Variables
+
+Copy:
 
 ```powershell
 copy .env.example .env
 ```
 
-Open `.env` and paste your key in place of `your_groq_api_key_here`.
+Open `.env` and add:
 
-Run the app:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+### Run Application
 
 ```powershell
 streamlit run app/app.py
 ```
 
-This opens the dashboard in your browser (usually `http://localhost:8501`).
+The application will launch at:
 
-### Run with Docker
+```
+http://localhost:8501
+```
+
+---
+
+## Docker
+
+Build the image:
 
 ```powershell
 docker build -t financial-analyzer .
+```
+
+Run the container:
+
+```powershell
 docker run -p 8501:8501 -e GROQ_API_KEY=your_key financial-analyzer
 ```
 
-## Evaluation panel
+---
 
-The "Ask AI" tab includes an expandable evaluation panel per answer, showing:
-- **Latency** — how long the retrieval + LLM call took
-- **Retrieved chunks** — the exact text passed to the LLM as context
-- **Prompt used** — the full prompt, for debugging/transparency
-- **Approx. token count** — a word-count-based estimate (not an exact tokenizer count — noted in the code)
+## Evaluation
 
-## Known limitations (worth stating upfront in an interview)
+The **Ask AI** module provides an evaluation panel containing:
 
-- Regex-based metric extraction won't catch every phrasing an annual report might use — it's a best-effort first pass.
-- Summary/risk/insight generation only looks at the first ~8000 characters of the report, not the whole document (a full map-reduce summarization approach would be a natural next step).
-- Currently supports one PDF at a time.
+- Response latency
+- Retrieved document chunks
+- Generated prompt
+- Approximate token count
 
-## Future improvements
+These details improve transparency and make debugging easier.
 
-- Support multiple reports and compare metrics year-over-year with real trend charts.
-- Map-reduce summarization across the whole document, not just the first section.
-- Cache embeddings so re-uploading the same PDF doesn't recompute the vector index.
-- Add source-page citations to answers (the `extract_text_per_page` function in `pdf_extractor.py` is already there to support this).
-- Add automated tests for the regex extraction and chunking logic.
+---
+
+## Known Limitations
+
+- Regex-based metric extraction may not capture every reporting format used by companies.
+- Summarization currently processes the first section of the report rather than the entire document.
+- Only one PDF can be analyzed at a time.
+- Requires an internet connection for Groq API responses.
+
+---
+
+## Future Improvements
+
+- Multi-document comparison and year-over-year financial analysis
+- Full-document map-reduce summarization
+- Embedding cache for faster repeated analysis
+- Source-page citations for AI responses
+- Automated unit tests for extraction and chunking modules
+- Export reports as PDF
+
+---
+
+## License
+
+This project is intended for educational and portfolio purposes.
