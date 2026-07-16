@@ -2,23 +2,24 @@
 
 An AI tool that reads a company's annual report PDF and lets you: get an instant financial summary, see key metrics (Revenue, Net Profit, EPS, etc.), read a risk analysis, and ask free-form questions about the report — answered using RAG (Retrieval-Augmented Generation) grounded in the actual document text.
 
-## Important note on testing (read this before your interview)
+## Testing
 
-I built this project's code carefully against the real APIs of each library, but the environment I built it in had **no internet access**, so I could not install `langchain`, `faiss`, `streamlit`, `groq`, or `pymupdf` there to run the full pipeline end-to-end. Here's exactly what was and wasn't verified:
+This project has been tested locally on Windows using Python 3.12.
 
-| Module | Status |
-|---|---|
-| `text_cleaner.py` | ✅ Tested — works correctly |
-| `chunker.py` | ✅ Tested (fallback path); LangChain path uses standard, well-documented API |
-| `financial_metrics.py` | ✅ Tested — correctly extracts all 9 metrics from sample text |
-| `charts.py` (number parsing logic) | ✅ Tested |
-| `pdf_extractor.py` | ⚠️ Written, not run — needs `pymupdf` + a real PDF |
-| `embeddings.py` | ⚠️ Written, not run — needs `sentence-transformers` + `faiss-cpu` |
-| `rag_qa.py`, `summary_generator.py` | ⚠️ Written, not run — needs `groq` + a real API key |
-| `app/app.py` | ⚠️ Syntax-checked only — needs `streamlit` + all of the above |
+### Verified Components
 
-**Before you put this on your resume, run it fully on your own machine and fix anything that comes up.** Treat this as a strong first draft, not a guaranteed-working final product — that's normal for any project built without being able to run the whole stack.
+- ✅ PDF extraction from financial reports
+- ✅ Text preprocessing and cleaning
+- ✅ Document chunking
+- ✅ Semantic embeddings using Hugging Face
+- ✅ FAISS vector database
+- ✅ Financial metric extraction
+- ✅ AI-powered summary generation
+- ✅ Retrieval-Augmented Generation (RAG)
+- ✅ Streamlit dashboard
+- ✅ Financial charts and visualizations
 
+> **Note:** To use AI-powered summarization and question answering, create a `.env` file and add your `GROQ_API_KEY`.
 ## Why these libraries
 
 - **PyMuPDF (`fitz`)**: fast, no external system dependencies (some PDF libraries need `poppler` installed separately on Windows, which is a common setup headache).
