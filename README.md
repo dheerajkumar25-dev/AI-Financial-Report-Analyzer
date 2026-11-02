@@ -4,6 +4,15 @@ An AI-powered financial analysis application built with Streamlit that helps use
 
 Upload an annual report PDF to generate financial summaries, identify potential risks, explore business segments, visualize financial metrics, and ask questions about the report using AI.
 
+## 🚀 Live Demo
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-red?style=for-the-badge&logo=streamlit)](https://ai-financial-report-analyzer-urxhjwbctxbxbbh7ee3gi.streamlit.app/)
+
+**Try the application:**  
+https://ai-financial-report-analyzer-urxhjwbctxbxbbh7ee3gi.streamlit.app/
+
+## 📸 Dashboard Preview
+
 ![AI Financial Report Analyzer Dashboard](docs/images/dashboard.png)
 
 ## Key Features
@@ -197,7 +206,7 @@ http://localhost:8501
 
 ## Deployment – Streamlit Community Cloud
 
-The application can be deployed using Streamlit Community Cloud.
+The application is deployed using Streamlit Community Cloud.
 
 1. Push the project to GitHub.
 2. Visit [Streamlit Community Cloud](https://share.streamlit.io/).
@@ -219,6 +228,9 @@ GROQ_MODEL = "openai/gpt-oss-20b"
 ```
 
 9. Click **Deploy**.
+
+**Live Application:**  
+https://ai-financial-report-analyzer-urxhjwbctxbxbbh7ee3gi.streamlit.app/
 
 ## Design Decisions
 
@@ -259,7 +271,7 @@ This project is developed for educational and portfolio purposes. It does not pr
 B.Tech – Electronics and Communication Engineering  
 IIIT Bhagalpur
 
-- GitHub: https://github.com/dheerajkumar25-dev
+- GitHub: [dheerajkumar25-dev](https://github.com/dheerajkumar25-dev)
 
 ---
 
